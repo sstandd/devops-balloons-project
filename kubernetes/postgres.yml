@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secrets
+  namespace: cicd-project
+type: Opaque
+data:
+  POSTGRES_USER: cG9zdGdyZXM=
+  POSTGRES_PASSWORD: YWRtaW4=
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config-map
+  namespace: cicd-project
+data:
+  POSTGRES_DB: balloon
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pvc
+  namespace: cicd-project
+  labels:
+    app: postgres
+spec:
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-database
+  namespace: cicd-project
+spec:
+  serviceName: postgres-database-svc
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:13-alpine
+          envFrom:
+            - configMapRef:
+                name: postgres-config-map
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+          ports:
+            - containerPort: 5432
+              name: postgres-port
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-database-svc
+  namespace: cicd-project
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
