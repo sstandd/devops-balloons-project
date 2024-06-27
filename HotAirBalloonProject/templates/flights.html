@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <br>
+        <div class="row row-cols-3 gx-4 gy-4">
+            {% for flight in flights %}
+                <div class="col">
+                    <div class="card border-danger rounded-1 p-0">
+                        <div class="card-header border-0" style="background-image: url('{{ MEDIA_URL }}{{ flight.image.url }}'); background-size: cover; background-repeat: no-repeat; background-position: center; height: 200px">
+                        </div>
+                        <div class="card-body" style="background-color: #222222; font-size: 0.8em">
+                            <h4 class="text-white">{{ flight.code }}</h4>
+                            <p style="color: gray">{{ flight.airport_from }} - {{ flight.airport_to }}</p>
+                            <p class="text-white">The flight is managed by the pilot {{ flight.pilot }} and
+                                airline {{ flight.airline }}.</p>
+                            <a class="btn rounded-0" style="border: 2px solid orangered; color: orangered">Book</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+        <br>
+        <br>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <br>
+    </div>
+{% endblock %}
+

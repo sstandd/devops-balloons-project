@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hot Air Balloons</title>
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+
+<div style="background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url('https://static.mycity.travel/manage/uploads/8/59/67650/1/vols-en-montgolfiere_1080.jpg') no-repeat center center ; background-size: cover; height: 70vh;">
+    <div class="container">
+        <nav class="container">
+            <div class="row py-3">
+                <div class="col-8">
+                    <a class="text-white text-decoration-none" href="{% url 'index' %}">Home</a>
+                </div>
+                <div class="col-1">
+                    <a class="text-white text-decoration-none" href="{% url 'flights' %}">Flights</a>
+                </div>
+                <div class="col-1">
+                    <a class="text-white text-decoration-none" href="#">Planes</a>
+                </div>
+                <div class="col-1">
+                    <a class="text-white text-decoration-none" href="#">About Us</a>
+                </div>
+                <div class="col-1">
+                    <a class="text-white text-decoration-none" href="#">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="d-flex align-items-center justify-content-center h-75">
+        <div class="row">
+            <div class="text-center text-white fw-normal">
+                <p>Best Airline Company</p>
+            </div>
+            <div class="m-auto bg-white" style="height: 1px; width: 2em;"></div>
+            <h1 class="text-center text-white fw-light py-5" style="font-size: 3.5em">Hot Air Balloon Rides</h1>
+            <div class="m-auto d-flex justify-content-center">
+                <a class="btn btn-dark text-uppercase rounded-pill px-4 fw-bold" style="font-size: 0.8em">Get your
+                    ticket</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% block content %}
+    <!-- default content text (typically empty) -->
+{% endblock %}
+<footer style="height: 50px; background-color: #2b6477" class="text-white justify-content-center d-flex align-items-center">
+    <p class="m-0">Copyright 2024 FINKI DNIC - All Rights Reserved</p>
+</footer>
+</body>
+</html>
